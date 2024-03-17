@@ -1,15 +1,13 @@
 import streamlit as st
 from transformers import pipeline
 
-# Membuat pipeline untuk analisis sentimen
-nlp = pipeline('sentiment-analysis')
-
-st.title('Analisis Sentimen dengan Streamlit dan Transformers')
+# Membuat pipeline transformer
+generator = pipeline('text-generation', model='gpt2')
 
 # Membuat input teks
-text = st.text_input('Masukkan teks di sini')
+input_text = st.text_input("Masukkan teks di sini")
 
-if text:
-    # Melakukan analisis sentimen
-    result = nlp(text)[0]
-    st.write(f"Sentimen: {result['label']}, Skor: {result['score']}")
+# Menghasilkan teks
+if st.button("Generate"):
+    output_text = generator(input_text, max_length=100, do_sample=True)[0]
+    st.write(output_text['generated_text'])
